@@ -56,7 +56,7 @@ namespace Transitional
 #endif
 
         public static unsafe string CreateString(sbyte* value, int startIndex, int length, System.Text.Encoding enc)
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETSTANDARD2_0 || NETCOREAPP2_0 || NETCOREAPP2_1
         {           
             int vlength = enc.GetCharCount((byte*)value, length);
             fixed (char* v = new char[vlength])
@@ -70,21 +70,21 @@ namespace Transitional
 #endif
 
         public static T GetDelegateForFunctionPointer<T>(IntPtr ptr)
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETSTANDARD2_0 || NETCOREAPP2_0 || NETCOREAPP2_1
             => Marshal.GetDelegateForFunctionPointer<T>(ptr);
 #else
             => (T)(object)Marshal.GetDelegateForFunctionPointer(ptr, typeof(T));
 #endif
 
         public static IntPtr GetFunctionPointerForDelegate<T>(T func)
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETSTANDARD2_0 || NETCOREAPP2_0 || NETCOREAPP2_1
             => Marshal.GetFunctionPointerForDelegate<T>(func);
 #else
             => Marshal.GetFunctionPointerForDelegate((Delegate)(object)func);
 #endif
 
         public static string GetBaseDirectory()
-#if NETSTANDARD1_6
+#if NETSTANDARD1_6 || NETSTANDARD2_0 || NETCOREAPP2_0 || NETCOREAPP2_1
             => AppContext.BaseDirectory;
 #else
             => AppDomain.CurrentDomain.BaseDirectory;
@@ -94,7 +94,7 @@ namespace Transitional
 
     internal static class TransitionalExtensions
     {
-#if NET40 || NETSTANDARD1_6
+#if NET40 || NETSTANDARD1_6 || NETSTANDARD2_0 || NETCOREAPP2_0 || NETCOREAPP2_1
         public static long GetLongLength<T>(this T[] array, int dimension) => array.GetLength(dimension);
 #endif
 
@@ -135,7 +135,7 @@ namespace Transitional
 }
 
 
-#if !NETSTANDARD1_6
+#if !(NETSTANDARD1_6 || NETSTANDARD2_0 || NETCOREAPP2_0 || NETCOREAPP2_1)
 namespace System.Runtime.InteropServices
 {
     public static class OSPlatform
